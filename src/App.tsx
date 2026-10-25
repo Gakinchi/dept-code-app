@@ -10,6 +10,7 @@ function App() {
   const [state, setState] = useState<LoadState>('loading')
   const [error, setError] = useState('')
   const [title, setTitle] = useState('')
+  const [location, setLocation] = useState('')
 
   async function load() {
     setState('loading')
@@ -29,9 +30,14 @@ function App() {
 
   async function addCase() {
     if (!title.trim()) return
-    const result = await Dept_deptcasesService.create({ dept_name: title.trim(), statecode: 0 })
+    const result = await Dept_deptcasesService.create({
+      dept_name: title.trim(),
+      dept_location: location.trim(),
+      statecode: 0,
+    })
     if (result.success) {
       setTitle('')
+      setLocation('')
       await load()
     } else {
       setError(result.error?.message ?? 'Create failed.')
@@ -60,6 +66,12 @@ function App() {
           placeholder="New case title"
           aria-label="New case title"
         />
+        <input
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          placeholder="Location"
+          aria-label="Location"
+        />
         <button type="submit">Register case</button>
       </form>
 
@@ -69,7 +81,10 @@ function App() {
       {state === 'ready' && cases.length > 0 && (
         <ul>
           {cases.map((c) => (
-            <li key={c.dept_deptcaseid}>{c.dept_name ?? '(untitled)'}</li>
+            <li key={c.dept_deptcaseid}>
+              {c.dept_name ?? '(untitled)'}
+              {c.dept_location && <span className="hint"> · {c.dept_location}</span>}
+            </li>
           ))}
         </ul>
       )}

@@ -92,6 +92,14 @@
           "required": true,
           "x-ms-keyType": "primary"
         },
+        "dept_location": {
+          "type": "string",
+          "title": "Location",
+          "x-ms-dataverse-attribute": "dept_location",
+          "x-ms-dataverse-type": "StringType",
+          "x-ms-schema-name": "dept_Location",
+          "maxLength": 100
+        },
         "dept_name": {
           "type": "string",
           "title": "Name",
