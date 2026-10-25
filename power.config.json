@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "appId": null,
+  "appDisplayName": "Dept Case App",
+  "region": "prod",
+  "appType": "CodeApp",
+  "environmentId": "1f1bf6da-187f-e015-adb4-b4eb3c59d14d",
+  "description": "Demo code app for the recursion.no guide on team access and ALM",
+  "buildPath": "./dist",
+  "buildEntryPoint": "index.html",
+  "localAppUrl": "http://localhost:3000",
+  "logoPath": "Default",
+  "connectionReferences": {},
+  "databaseReferences": {
+    "default.cds": {
+      "dataSources": {
+        "deptcases": {
+          "entitySetName": "dept_deptcases",
+          "logicalName": "dept_deptcase",
+          "isHidden": false
+        }
+      },
+      "environmentVariableName": ""
+    }
+  }
+}
