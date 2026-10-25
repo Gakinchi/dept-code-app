@@ -57,7 +57,7 @@ function App() {
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="New case title"
+          placeholder="Register a new case, for example Broken printer on floor 3"
           aria-label="New case title"
         />
         <button type="submit">Register case</button>
