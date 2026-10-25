@@ -1,0 +1,23 @@
+name: Publish code app to Dev
+
+# Only main is published, and only by this job. Developers run `pa app run` locally.
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      PA_CLI_USE_SP_AUTH: "true"
+      PA_CLI_SP_CLIENT_ID: ${{ secrets.PA_CLIENT_ID }}
+      PA_CLI_SP_CLIENT_SECRET: ${{ secrets.PA_CLIENT_SECRET }}
+      PA_CLI_SP_TENANT_ID: ${{ secrets.PA_TENANT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run build
+      - run: npx pa app push --non-interactive

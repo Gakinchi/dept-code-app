@@ -1,0 +1,4 @@
+# One person reviews every change to the platform binding.
+# power.config.json ties this repository to the app, its environment and its data sources.
+/power.config.json   @recursion-dennis
+/src/generated/      @recursion-dennis
