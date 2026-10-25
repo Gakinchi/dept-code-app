@@ -15,6 +15,7 @@ export type Dept_deptcasesstatuscode = keyof typeof Dept_deptcasesstatuscode;
 
 export interface Dept_deptcasesBase {
   dept_deptcaseid: string;
+  dept_location?: string;
   dept_name?: string;
   importsequencenumber?: number;
   overriddencreatedon?: string;
