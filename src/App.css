@@ -1,19 +1,33 @@
 .app {
-  max-width: 640px;
+  max-width: 720px;
   margin: 2rem auto;
-  padding: 0 1rem;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  padding: 0 1.5rem;
   text-align: left;
 }
-.hint { color: #666; }
+.hint { color: #616161; }
 .row { display: flex; gap: 0.5rem; margin: 1rem 0; }
-.row input { flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; }
-.row button { padding: 0.5rem 1rem; border: 0; border-radius: 6px; background: #742774; color: #fff; cursor: pointer; }
+.row input { flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #c7c7c7; border-radius: 6px; }
+.primary { padding: 0.5rem 1rem; border: 0; border-radius: 6px; background: #742774; color: #fff; cursor: pointer; }
 .error { color: #b00020; }
+
 .cases { width: 100%; border-collapse: collapse; }
-.cases th, .cases td { text-align: left; padding: 0.5rem 0.25rem; border-bottom: 1px solid #e5e5e5; }
-.link { padding: 0; border: 0; background: none; color: #742774; font: inherit; cursor: pointer; text-decoration: underline; }
+.cases th, .cases td { text-align: left; padding: 0.6rem 0.25rem; border-bottom: 1px solid #e0e0e0; }
+.cases th { color: #616161; font-weight: 600; }
+.link { padding: 0; border: 0; background: none; color: #742774; cursor: pointer; text-decoration: underline; }
+
 .fields { display: grid; grid-template-columns: 8rem 1fr; gap: 0.4rem 1rem; margin: 1rem 0 1.5rem; }
-.fields dt { color: #666; }
+.fields dt { color: #616161; }
 .fields dd { margin: 0; }
-.share { display: block; color: #666; }
+
+.share { display: block; color: #616161; }
+.share textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.4rem 0 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #c7c7c7;
+  border-radius: 6px;
+  color: #242424;
+  resize: none;
+}

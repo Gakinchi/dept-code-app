@@ -65,13 +65,11 @@ export function CaseView({ caseId, link, onBack }: Props) {
 
           <label className="share">
             Link to this case
-            <span className="row">
-              <input readOnly value={link} onFocus={(e) => e.target.select()} />
-              <button type="button" onClick={() => void copyLink()}>
-                {copied ? 'Copied' : 'Copy link'}
-              </button>
-            </span>
+            <textarea readOnly rows={3} value={link} onFocus={(e) => e.target.select()} />
           </label>
+          <button type="button" className="primary" onClick={() => void copyLink()}>
+            {copied ? 'Copied' : 'Copy link'}
+          </button>
         </>
       )}
     </section>

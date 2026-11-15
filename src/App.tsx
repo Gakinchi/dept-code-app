@@ -87,7 +87,7 @@ function App() {
           placeholder="New case title"
           aria-label="New case title"
         />
-        <button type="submit">Register case</button>
+        <button type="submit" className="primary">Register case</button>
       </form>
 
       {state === 'loading' && <p>Loading cases…</p>}
