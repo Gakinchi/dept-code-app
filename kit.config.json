@@ -1,0 +1,13 @@
+{
+  "allowedEnvironments": ["1f1bf6da-187f-e015-adb4-b4eb3c59d14d"],
+  "allowedOperations": {
+    "Dept_deptcasesService": ["getAll", "create", "get"]
+  },
+  "requireGit": true,
+  "requireFreshBuild": true,
+  "buildOutput": "dist/index.html",
+  "sources": ["src", "index.html"],
+  "protectedPaths": ["src/generated", ".power"],
+  "confirmGlobalInstall": true,
+  "gitScope": "repo"
+}

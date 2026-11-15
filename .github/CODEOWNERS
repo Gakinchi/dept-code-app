@@ -2,3 +2,10 @@
 # power.config.json ties this repository to the app, its environment and its data sources.
 /power.config.json   @Gakinchi
 /src/generated/      @Gakinchi
+
+# Code Apps kit: changes to the kit's rules for this app need a review.
+/kit.config.json            @Gakinchi
+/eslint.code-apps-kit.js    @Gakinchi
+/eslint.config.js           @Gakinchi
+/.github/workflows/         @Gakinchi
+/.github/CODEOWNERS         @Gakinchi
