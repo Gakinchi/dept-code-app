@@ -18,4 +18,5 @@
 .bubble.agent { align-self: flex-start; background: #ffffff; border: 1px solid #e0e0e0; }
 .bubble.user { align-self: flex-end; background: #742774; color: #ffffff; }
 .agent-panel .row { margin: 0; }
-.agent-toggle { position: fixed; top: 1rem; right: 1rem; }
+/* The player lays a notice bar over the top of the app in a Developer environment. */
+.agent-toggle { position: fixed; top: 3rem; right: 1.5rem; }

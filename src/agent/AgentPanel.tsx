@@ -6,6 +6,11 @@ import './AgentPanel.css'
 type Message = { from: 'user' | 'agent'; text: string }
 type Status = 'signed-out' | 'connecting' | 'ready' | 'waiting' | 'error'
 
+/** The agent answers in Markdown. Show **bold** as bold and leave the rest as text. */
+function withBold(text: string) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part))
+}
+
 function errorText(e: unknown) {
   return e instanceof Error ? e.message : String(e)
 }
@@ -79,7 +84,7 @@ function AgentPanel({ onClose }: { onClose: () => void }) {
         )}
         {messages.map((m, i) => (
           <p key={i} className={`bubble ${m.from}`}>
-            {m.text}
+            {withBold(m.text)}
           </p>
         ))}
         {(status === 'connecting' || status === 'waiting') && <p className="hint">…</p>}
