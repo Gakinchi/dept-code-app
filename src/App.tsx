@@ -16,7 +16,7 @@ function App() {
   const [openCaseId, setOpenCaseId] = useState('')
   const [playUrl, setPlayUrl] = useState('')
 
-  function showCases(result: Awaited<ReturnType<typeof Dept_deptcasesService.getAll>>) {
+  function setLoadedCases(result: Awaited<ReturnType<typeof Dept_deptcasesService.getAll>>) {
     if (result.success && result.data) {
       setCases(result.data)
       setState('ready')
@@ -27,12 +27,12 @@ function App() {
   }
 
   async function load() {
-    showCases(await Dept_deptcasesService.getAll())
+    setLoadedCases(await Dept_deptcasesService.getAll())
   }
 
   useEffect(() => {
-    void Dept_deptcasesService.getAll().then(showCases)
-    // A link with ?caseId=<id> opens the app directly on that case.
+    void Dept_deptcasesService.getAll().then(setLoadedCases)
+    // A link with ?caseId=<id> opens the app on that case.
     void readStartInfo().then((start) => {
       setPlayUrl(start.playUrl)
       const caseId = findParam(start.params, 'caseId')
