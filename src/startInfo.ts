@@ -21,7 +21,7 @@ export async function readStartInfo(): Promise<StartInfo> {
   }
   const ctx = await getContext()
   const playUrl =
-    ctx.app.appUrl ?? `https://apps.powerapps.com/play/e/${ctx.app.environmentId}/a/${ctx.app.appId}`
+    ctx.app.appUrl ?? `https://apps.powerapps.com/play/e/${ctx.app.environmentId}/app/${ctx.app.appId}`
   return { params: ctx.app.queryParams ?? {}, playUrl }
 }
 
