@@ -10,4 +10,10 @@
 .row input { flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; }
 .row button { padding: 0.5rem 1rem; border: 0; border-radius: 6px; background: #742774; color: #fff; cursor: pointer; }
 .error { color: #b00020; }
-ul { padding-left: 1.25rem; }
+.cases { width: 100%; border-collapse: collapse; }
+.cases th, .cases td { text-align: left; padding: 0.5rem 0.25rem; border-bottom: 1px solid #e5e5e5; }
+.link { padding: 0; border: 0; background: none; color: #742774; font: inherit; cursor: pointer; text-decoration: underline; }
+.fields { display: grid; grid-template-columns: 8rem 1fr; gap: 0.4rem 1rem; margin: 1rem 0 1.5rem; }
+.fields dt { color: #666; }
+.fields dd { margin: 0; }
+.share { display: block; color: #666; }

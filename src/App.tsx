@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Dept_deptcasesService, Dept_deptcasesModel } from './generated'
+import { CaseView } from './CaseView'
+import { caseLink, findParam, readStartInfo } from './startInfo'
 import './App.css'
 
 type DeptCase = Dept_deptcasesModel.Dept_deptcases
@@ -10,10 +12,11 @@ function App() {
   const [state, setState] = useState<LoadState>('loading')
   const [error, setError] = useState('')
   const [title, setTitle] = useState('')
+  // The case shown in the item view. Empty means the list is shown.
+  const [openCaseId, setOpenCaseId] = useState('')
+  const [playUrl, setPlayUrl] = useState('')
 
-  async function load() {
-    setState('loading')
-    const result = await Dept_deptcasesService.getAll()
+  function showCases(result: Awaited<ReturnType<typeof Dept_deptcasesService.getAll>>) {
     if (result.success && result.data) {
       setCases(result.data)
       setState('ready')
@@ -23,8 +26,18 @@ function App() {
     }
   }
 
+  async function load() {
+    showCases(await Dept_deptcasesService.getAll())
+  }
+
   useEffect(() => {
-    void load()
+    void Dept_deptcasesService.getAll().then(showCases)
+    // A link with ?caseId=<id> opens the app directly on that case.
+    void readStartInfo().then((start) => {
+      setPlayUrl(start.playUrl)
+      const caseId = findParam(start.params, 'caseId')
+      if (caseId) setOpenCaseId(caseId)
+    })
   }, [])
 
   async function addCase() {
@@ -37,6 +50,20 @@ function App() {
       setError(result.error?.message ?? 'Create failed.')
       setState('error')
     }
+  }
+
+  if (openCaseId) {
+    return (
+      <main className="app">
+        <h1>Dept Case App</h1>
+        <CaseView
+          key={openCaseId}
+          caseId={openCaseId}
+          link={caseLink(playUrl, openCaseId)}
+          onBack={() => setOpenCaseId('')}
+        />
+      </main>
+    )
   }
 
   return (
@@ -67,11 +94,26 @@ function App() {
       {state === 'error' && <p className="error">Dataverse error: {error}</p>}
       {state === 'ready' && cases.length === 0 && <p>No cases yet.</p>}
       {state === 'ready' && cases.length > 0 && (
-        <ul>
-          {cases.map((c) => (
-            <li key={c.dept_deptcaseid}>{c.dept_name ?? '(untitled)'}</li>
-          ))}
-        </ul>
+        <table className="cases">
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cases.map((c) => (
+              <tr key={c.dept_deptcaseid}>
+                <td>
+                  <button type="button" className="link" onClick={() => setOpenCaseId(c.dept_deptcaseid)}>
+                    {c.dept_name ?? '(untitled)'}
+                  </button>
+                </td>
+                <td>{c.createdon ? new Date(c.createdon).toLocaleDateString() : ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </main>
   )
