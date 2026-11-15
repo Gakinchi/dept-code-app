@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Activity } from '@microsoft/agents-activity'
 import type { CopilotStudioClient } from '@microsoft/agents-copilotstudio-client'
 import { connectToAgent } from './agentClient'
 import './AgentPanel.css'
@@ -34,11 +35,11 @@ function AgentPanel({ onClose }: { onClose: () => void }) {
   const [draft, setDraft] = useState('')
   const [error, setError] = useState('')
 
-  function addAgentMessages(activities: { type?: string; text?: string }[]) {
-    const replies = activities
-      .filter((a) => a.type === 'message' && a.text)
-      .map((a) => ({ from: 'agent' as const, text: a.text! }))
-    setMessages((current) => [...current, ...replies])
+  /** Shows what the agent sent, if it is a message with text. Other activities (typing, events) are skipped. */
+  function addAgentMessage(activity: { type?: string; text?: string }) {
+    const text = activity.text
+    if (activity.type !== 'message' || !text) return
+    setMessages((current) => [...current, { from: 'agent', text }])
   }
 
   async function connect() {
@@ -46,7 +47,7 @@ function AgentPanel({ onClose }: { onClose: () => void }) {
     setError('')
     try {
       client.current = await connectToAgent()
-      addAgentMessages(await client.current.startConversationAsync(true))
+      for await (const activity of client.current.startConversationStreaming(true)) addAgentMessage(activity)
       setStatus('ready')
     } catch (e) {
       setError(errorText(e))
@@ -61,7 +62,8 @@ function AgentPanel({ onClose }: { onClose: () => void }) {
     setMessages((current) => [...current, { from: 'user', text: question }])
     setStatus('waiting')
     try {
-      addAgentMessages(await client.current.askQuestionAsync(question))
+      const activity = Activity.fromObject({ type: 'message', text: question })
+      for await (const reply of client.current.sendActivityStreaming(activity)) addAgentMessage(reply)
       setStatus('ready')
     } catch (e) {
       setError(errorText(e))

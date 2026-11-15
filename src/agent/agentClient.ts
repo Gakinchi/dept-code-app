@@ -1,5 +1,5 @@
 import { InteractionRequiredAuthError, PublicClientApplication } from '@azure/msal-browser'
-import { ConnectionSettings, CopilotStudioClient } from '@microsoft/agents-copilotstudio-client'
+import { ConnectionSettings, CopilotStudioClient, ScopeHelper } from '@microsoft/agents-copilotstudio-client'
 import { agentConfig } from './agentConfig'
 
 const settings = new ConnectionSettings({
@@ -23,7 +23,7 @@ const msal = new PublicClientApplication({
 /** Gets a token for the Power Platform API, with a sign-in window the first time. */
 async function getToken(): Promise<string> {
   await msal.initialize()
-  const request = { scopes: [CopilotStudioClient.scopeFromSettings(settings)], redirectUri }
+  const request = { scopes: [ScopeHelper.getScopeFromSettings(settings)], redirectUri }
 
   const account = msal.getAllAccounts()[0]
   if (account) {
