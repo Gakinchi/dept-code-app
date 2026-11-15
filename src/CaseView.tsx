@@ -9,6 +9,16 @@ type Props = {
   onBack: () => void
 }
 
+/** Dataverse answers with a JSON document. Show the sentence in it, not the whole document. */
+function readableError(message: string | undefined, caseId: string) {
+  if (!message) return `No case with ID ${caseId}.`
+  try {
+    return JSON.parse(message).error?.message ?? message
+  } catch {
+    return message
+  }
+}
+
 function formatDate(value?: string) {
   return value ? new Date(value).toLocaleString() : '(not set)'
 }
@@ -24,7 +34,7 @@ export function CaseView({ caseId, link, onBack }: Props) {
     Dept_deptcasesService.get(caseId).then((result) => {
       if (!current) return
       if (result.success && result.data) setItem(result.data)
-      else setError(result.error?.message ?? `No case with ID ${caseId}.`)
+      else setError(readableError(result.error?.message, caseId))
     })
     return () => {
       current = false
