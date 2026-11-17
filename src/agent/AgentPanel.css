@@ -17,9 +17,23 @@
 }
 .agent-panel header, .agent-panel form { display: flex; gap: 0.5rem; justify-content: space-between; align-items: center; }
 .agent-panel input { flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px; }
-.agent-panel button, .agent-toggle { padding: 0.5rem 1rem; border: 0; border-radius: 6px; background: #742774; color: #fff; cursor: pointer; }
+.agent-panel button, .agent-toggle {
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 6px;
+  background: #742774;
+  color: #fff;
+  cursor: pointer;
+}
 
 .agent-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
-.agent-messages p { margin: 0; padding: 0.5rem 0.75rem; border-radius: 10px; max-width: 85%; white-space: pre-wrap; overflow-wrap: anywhere; }
+.agent-messages p {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  max-width: 85%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .agent-messages .agent { align-self: flex-start; background: #fff; border: 1px solid #e0e0e0; }
 .agent-messages .user { align-self: flex-end; background: #742774; color: #fff; }
