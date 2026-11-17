@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { getContext } from '@microsoft/power-apps/app'
 import { Dept_deptcasesService, Dept_deptcasesModel } from './generated'
+import { CaseView } from './CaseView'
 import './App.css'
 
 type DeptCase = Dept_deptcasesModel.Dept_deptcases
@@ -10,6 +12,8 @@ function App() {
   const [state, setState] = useState<LoadState>('loading')
   const [error, setError] = useState('')
   const [title, setTitle] = useState('')
+  // The case that is open. Empty means the list is shown.
+  const [openCaseId, setOpenCaseId] = useState('')
 
   async function load() {
     setState('loading')
@@ -25,6 +29,11 @@ function App() {
 
   useEffect(() => {
     void load()
+    // A link with ?caseId=<id> opens that case.
+    void getContext().then((ctx) => {
+      const caseId = ctx.app.queryParams.caseId
+      if (caseId) setOpenCaseId(caseId)
+    })
   }, [])
 
   async function addCase() {
@@ -37,6 +46,15 @@ function App() {
       setError(result.error?.message ?? 'Create failed.')
       setState('error')
     }
+  }
+
+  if (openCaseId) {
+    return (
+      <main className="app">
+        <h1>Dept Case App</h1>
+        <CaseView key={openCaseId} caseId={openCaseId} onBack={() => setOpenCaseId('')} />
+      </main>
+    )
   }
 
   return (
@@ -69,7 +87,11 @@ function App() {
       {state === 'ready' && cases.length > 0 && (
         <ul>
           {cases.map((c) => (
-            <li key={c.dept_deptcaseid}>{c.dept_name ?? '(untitled)'}</li>
+            <li key={c.dept_deptcaseid}>
+              <button type="button" className="link" onClick={() => setOpenCaseId(c.dept_deptcaseid)}>
+                {c.dept_name ?? '(untitled)'}
+              </button>
+            </li>
           ))}
         </ul>
       )}
