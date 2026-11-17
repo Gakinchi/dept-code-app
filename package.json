@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.30.0",
+    "@microsoft/agents-activity": "^1.10.1",
+    "@microsoft/agents-copilotstudio-client": "^1.10.1",
     "@microsoft/power-apps": "^1.6.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
