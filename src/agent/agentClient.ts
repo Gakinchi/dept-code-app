@@ -1,4 +1,5 @@
 import { PublicClientApplication } from '@azure/msal-browser'
+import { getContext } from '@microsoft/power-apps/app'
 import { ConnectionSettings, CopilotStudioClient, ScopeHelper } from '@microsoft/agents-copilotstudio-client'
 
 // None of these values are secrets: a single-page app registration has no client secret.
@@ -20,22 +21,13 @@ const msal = new PublicClientApplication({
   },
 })
 
-/** Gets a token for the Power Platform API. */
-async function getToken(): Promise<string> {
-  await msal.initialize()
-  const account = msal.getAllAccounts()[0]
-  if (account) {
-    try {
-      return (await msal.acquireTokenSilent({ scopes, account })).accessToken
-    } catch {
-      // No token without the user. Go on to the sign-in window.
-    }
-  }
-  // A code app runs in a frame, so the sign-in has to open in its own window.
-  return (await msal.loginPopup({ scopes })).accessToken
-}
-
 /** Signs the user in and returns a client that talks to the agent. */
-export async function connectToAgent(): Promise<CopilotStudioClient> {
-  return new CopilotStudioClient(settings, await getToken())
+export async function connectToAgent(silent: boolean): Promise<CopilotStudioClient> {
+  await msal.initialize()
+  const { user } = await getContext()
+  const request = { scopes, loginHint: user.userPrincipalName }
+  // silent: a hidden frame reuses the user's Microsoft sign-in from Power Apps, no window.
+  // Otherwise a sign-in window, which the browser only opens after a click.
+  const result = silent ? await msal.ssoSilent(request) : await msal.loginPopup(request)
+  return new CopilotStudioClient(settings, result.accessToken)
 }

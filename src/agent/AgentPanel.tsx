@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Activity } from '@microsoft/agents-activity'
 import type { CopilotStudioClient } from '@microsoft/agents-copilotstudio-client'
 import { connectToAgent } from './agentClient'
@@ -32,18 +32,28 @@ function AgentPanel({ onClose }: { onClose: () => void }) {
     if (activity.type === 'message' && text) setMessages((all) => [...all, { from: 'agent', text }])
   }
 
-  async function connect() {
+  async function connect(silent: boolean) {
     setBusy(true)
     setError('')
     try {
-      const agent = await connectToAgent()
+      const agent = await connectToAgent(silent)
       for await (const activity of agent.startConversationStreaming(true)) show(activity)
       setClient(agent)
     } catch (e) {
-      setError((e as Error).message)
+      // A failed silent start leaves the button Sign in and start for the user.
+      if (!silent) setError((e as Error).message)
     }
     setBusy(false)
   }
+
+  // Start the conversation without a window when the panel opens. The ref stops a second
+  // start when React runs the effect twice in development.
+  const started = useRef(false)
+  useEffect(() => {
+    if (started.current) return
+    started.current = true
+    void connect(true)
+  }, [])
 
   async function send() {
     const text = draft.trim()
@@ -92,8 +102,8 @@ function AgentPanel({ onClose }: { onClose: () => void }) {
             Send
           </button>
         </form>
-      ) : (
-        <button type="button" disabled={busy} onClick={() => void connect()}>
+      ) : busy ? null : (
+        <button type="button" onClick={() => void connect(false)}>
           Sign in and start
         </button>
       )}
